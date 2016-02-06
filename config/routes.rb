@@ -6,9 +6,10 @@ Rails.application.routes.draw do
   resources :users
 
   #SESSIONS
-  post 'sessions/create'   => 'sessions#create'
-  post 'sessions/destroy'  => 'sessions#destroy'
-  post 'sessions/validate' => 'sessions#validate'
+  post 'api/sessions/new'      => 'sessions#new'
+  post 'api/sessions/create'   => 'sessions#create'
+  post 'api/sessions/destroy'  => 'sessions#destroy'
+  post 'api/sessions/validate' => 'sessions#validate'
 
   #MATCHES
   get 'matches' => 'matches#index'
@@ -16,6 +17,10 @@ Rails.application.routes.draw do
   #PUNCHES
   get 'punches' => 'punches#index'
   post 'punch'  => 'punches#punch'
+
+  #MESSAGES
+  get 'messages' => 'messages#index'
+  get 'messages/:id' => 'messages#show'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -4,6 +4,17 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   #POST
+  def new
+    @user = User.new(params.require(:sign_up).permit(:email, :password))
+    if @user.save
+      render nothing:true, status: :accepted
+    else
+      render nothing:true, status: :bad_request
+    end
+
+  end
+
+  #POST
   def create
     @user = User.where(:email => params[:login][:email]).first
     if @user

@@ -14,14 +14,17 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Profile <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Matches</a></li>
+        <% if logged_in? %>
+          <li><a href="#">Profile <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Matches</a></li>
+          <li><a href="#">Messages</a></li>
+        <% end %>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
 
         <% if logged_in? %>
-          <li class="dropdown">
+          <li class="dropdown" ng-controller="logout">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %> <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">Profile</a></li>
@@ -29,11 +32,12 @@
               <li><a href="#">Friends</a></li>
               <li><a href="#">Punches</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><%= link_to 'Logout', sessions_destroy_path, method: :post %></a></li>
+              <li><a ng-click="submit()">logout</a></li>
             </ul>
           </li>
         <% else %>
-          <li><a href="#">Login</a></li>
+          <li><a data-toggle="modal" data-target="#login_modal">Login</a></li>
+          <li><a data-toggle="modal" data-target="#signup_modal">Sign up</a></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

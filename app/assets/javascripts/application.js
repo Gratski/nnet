@@ -20,6 +20,9 @@
 //= require angular/core/application.js
 
 //= require angular/controllers/main/main.js
+//= require angular/controllers/sessions/login.js
+//= require angular/controllers/sessions/logout.js
+//= require angular/controllers/sessions/signup.js
 
 //= require turbolinks
 //= require_tree .

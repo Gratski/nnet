@@ -1,18 +1,21 @@
 class User < ActiveRecord::Base
 
   has_many :punches
+  has_many :user_puncheds, through: :punches
 
   #get this user conversations
   def conversations
     Conversation.where("user_1 = ? OR user_2 = ?", id, id)
   end
-
-  def who_i_punched
-    #FAZER GET PUNCHED USERS
-  end
   
-  def who_punched_me
-    #FAZER GET WHO PUNCHED ME USERS
+  #see who punched a certain user
+  def who_punched_me(offset, limit)
+    punches = Punch.where("user_punched_id = ?", id)
+    punchers = Array.new(punches.length)
+    punches.each do |punch|
+      punchers << punch.user_id
+    end
+    User.where(:id => punchers)
   end
   
   #verifica se um user ja fez punch

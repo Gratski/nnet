@@ -11,10 +11,18 @@
 <!-- NAVIGATION -->
 <%= render 'layouts/navigation' %>
 
-<%= yield %>
+<div class="container">
+  <%= yield %>
+</div>
 
 <!-- FOOTER -->
 <%= render 'layouts/footer' %>
+
+
+
+<!-- MODALS -->
+<%= render 'layouts/login_modal' %>
+<%= render 'layouts/signup_modal' %>
 
 </body>
 </html>
