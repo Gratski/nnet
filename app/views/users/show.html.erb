@@ -1,0 +1,27 @@
+<div ng-controller="profile" class="col-md-12">
+  
+  <div class="row">
+    <div class="col-md-8">
+      <div class="col-md-5">PICTURE</div>
+      <div class="col-md-7">
+        <%= @user.name %><br>
+        <% if @user.city %>
+          <%= @user.city.name %>, <%= @user.city.country.name %>
+        <% else %>
+          <span>location unknown</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <% if current_user.is_a_punch_back?(@user.id) %>
+        <button ng-click="punch_back(<%= @user.id %>)" class="btn btn-lg btn-success">Punch back!</button>
+      <% elsif current_user.already_punched?(@user.id) %>
+        <button class="btn btn-lg btn-info">Already punched!</button>
+      <% else %>
+        <button ng-click="punch(<%= @user.id %>)" class="btn btn-lg btn-primary">Punch</button>
+      <% end %>
+    </div>
+  </div>
+  <div class="row"></div>
+
+</div>

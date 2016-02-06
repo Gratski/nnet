@@ -3,6 +3,11 @@ class User < ActiveRecord::Base
   has_many :punches
   has_many :user_puncheds, through: :punches
 
+  has_one :user_city
+  has_one :city, through: :user_city
+
+  has_many :messages
+
   #get this user conversations
   def conversations
     Conversation.where("user_1 = ? OR user_2 = ?", id, id)

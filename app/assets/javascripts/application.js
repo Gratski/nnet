@@ -24,5 +24,7 @@
 //= require angular/controllers/sessions/logout.js
 //= require angular/controllers/sessions/signup.js
 
+//= require angular/controllers/user/profile.js
+
 //= require turbolinks
 //= require_tree .

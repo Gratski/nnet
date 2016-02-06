@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   #PUNCHES
   get 'punches' => 'punches#index'
-  post 'punch'  => 'punches#punch'
+  post '/api/punch'  => 'punches#punch'
 
   #MESSAGES
   get 'messages' => 'messages#index'
