@@ -6,7 +6,7 @@
 
       $scope.conversation = conversation
       $scope.messages = messages
-
+      alert('ghghgs')
     }
 
     $scope.send = function(conversation, from){
