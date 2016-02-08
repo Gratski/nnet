@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160206142853) do
+ActiveRecord::Schema.define(version: 20160207144903) do
 
   create_table "cities", force: :cascade do |t|
     t.integer  "country_id"
@@ -26,8 +26,10 @@ ActiveRecord::Schema.define(version: 20160206142853) do
   create_table "conversations", force: :cascade do |t|
     t.integer  "user_1"
     t.integer  "user_2"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.boolean  "deleted_by_user_1", default: false
+    t.boolean  "deleted_by_user_2", default: false
   end
 
   create_table "countries", force: :cascade do |t|
@@ -35,6 +37,27 @@ ActiveRecord::Schema.define(version: 20160206142853) do
     t.string   "code"
     t.float    "latitude"
     t.float    "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "deleted_conversations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "conversation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "details", force: :cascade do |t|
+    t.integer  "user_id"
+    t.text     "self_description"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "interests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.text     "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -55,9 +78,38 @@ ActiveRecord::Schema.define(version: 20160206142853) do
     t.integer  "user_punched_id"
   end
 
+  create_table "sector_areas", force: :cascade do |t|
+    t.integer  "sector_id"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "sectors", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "user_cities", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "city_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_sectors", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "sector_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -70,6 +122,8 @@ ActiveRecord::Schema.define(version: 20160206142853) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.string   "password_digest"
+    t.boolean  "admin"
+    t.date     "birthdate"
   end
 
 end

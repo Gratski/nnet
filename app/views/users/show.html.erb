@@ -22,6 +22,52 @@
       <% end %>
     </div>
   </div>
-  <div class="row"></div>
+
+  <!-- DETAILS -->
+  <div class="row">
+    <% if @user.detail %>
+      <!-- Summary -->
+      <% if @user.detail.self_description %>
+        <div class="col-md-12">
+          <p class="lead">Self description</p>
+          <p><%= @user.detail.self_description if @user.detail %></p>
+        </div>
+      <% end %>
+    gosto de tu
+      <!-- Topics -->
+      <% if @user.topics.size > 0 %>
+        <div class="col-md-12">
+          <p class="lead">Describe yourself with 5 words</p>
+          <span class="label label-info topics">Topic 1</span>
+          <span class="label label-info topics">Topic 2</span>
+        </div>
+      <% end %>
+
+      <!-- Interests -->
+      <% if @user.interests.size > 0 %>
+        <div class="col-md-12">
+          
+        </div>
+      <% end %>
+
+      <!-- books and movies -->
+      <div class="col-md-12">
+        <p class="lead">Books and Movies</p>
+        <span class="label label-info topics">Livro 1</span>
+        <span class="label label-info topics">Livro 2</span>
+      </div>
+
+      <div class="col-md-12">
+        <p class="lead">Idols</p>
+        <span class="label label-info topics">Livro 1</span>
+      </div>
+
+    <% else %>
+      <div class="col-md-12 text-center dashed-box">
+        <h3>Nothing to show</h3>
+      </div>
+    <% end %>
+
+  </div>
 
 </div>

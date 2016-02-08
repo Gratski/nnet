@@ -8,6 +8,15 @@ class User < ActiveRecord::Base
 
   has_many :messages
 
+  has_many :topics
+  has_one :detail
+  has_many :interests
+
+  has_many :user_sectors
+  has_many :sectors, through: :user_sectors
+
+  has_many :deleted_conversations
+
   #get this user conversations
   def conversations
     Conversation.where("user_1 = ? OR user_2 = ?", id, id)

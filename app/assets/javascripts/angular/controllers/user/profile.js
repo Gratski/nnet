@@ -2,6 +2,9 @@
 
   var controller = function($scope, $window, $http){
 
+    var div_user    = document.getElementById("div_user")
+    var div_details = document.getElementById("div_details")
+
     //simple punch function
     $scope.punch = function(user_punched_id)
     {
@@ -13,6 +16,8 @@
         alert("oops...")
       })
     }
+
+
 
   }
 

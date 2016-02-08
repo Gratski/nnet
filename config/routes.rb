@@ -4,6 +4,17 @@ Rails.application.routes.draw do
 
   #USERS
   resources :users
+  get 'users/edit' => 'users#edit'
+
+  #MESSAGES
+  resources :messages
+  get '/api/messages'  => 'messages#get_conversations'
+  get '/api/messages/:id' => 'messages#get_messages'
+  post '/api/messages' => 'messages#create'
+  delete '/api/messages/:id' => 'messages#destroy'
+
+  #SECTORS
+  resources :sectors
 
   #SESSIONS
   post 'api/sessions/new'      => 'sessions#new'
@@ -15,8 +26,11 @@ Rails.application.routes.draw do
   get 'matches' => 'matches#index'
 
   #PUNCHES
-  get 'punches' => 'punches#index'
-  post '/api/punch'  => 'punches#punch'
+  get   'punches'    => 'punches#index'
+  post  '/api/punch' => 'punches#punch'
+  get   '/api/punches/:offset/:limit' => 'punches#my_punches'
+  get   '/api/punched/:offset/:limit' => 'punches#punched_me'
+  delete  '/api/punch/:user_id' => 'punches#unpunch'
 
   #MESSAGES
   get 'messages' => 'messages#index'

@@ -26,5 +26,10 @@
 
 //= require angular/controllers/user/profile.js
 
+//= require angular/controllers/messages/conversation_messages.js
+//= require angular/controllers/messages/messages.js
+
+//= require angular/controllers/punches/punches.js
+
 //= require turbolinks
 //= require_tree .

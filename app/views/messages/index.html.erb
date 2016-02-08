@@ -1,1 +1,38 @@
-<h1>Messages</h1>
+<div class="col-md-12" ng-controller="messages">
+  
+  <div class="col-md-12" ng-repeat="c in conversations">
+    <div class="col-md-10 col-md-offset-1 well">
+      <div class="col-md-4">
+        PICTURE<br>
+        {{c.friend.name}}
+      </div>
+
+      <div class="col-md-6">
+        <a href="/messages/{{c.conversation_id}}">
+          <div class="col-md-10" ng-if="c.message.user_id != <%= @user.id %>">
+            {{c.friend.name}}:&nbsp;{{c.message.body}}
+          </div>
+          <div class="col-md-10" ng-if="c.message.user_id == <%= @user.id %>">
+            Me:&nbsp;{{c.message.body}}
+          </div>
+        </a>
+        <div class="col-md-2">
+          <span ng-if="c.message.user_id == <%= @user.id %> && (c.message.seen != true )"></span>
+          <span ng-if="c.message.user_id == <%= @user.id %> && (c.message.seen == true )">
+            <i class="glyphicon glyphicon-ok"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <a ng-click="delete_conversation(c.conversation_id)">lixo</a>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+
+  <!-- IF THERE ARE NO CONVERSATIONS TO SHOW -->
+  <div class="col-md-12 text-center" ng-if="conversations.length == 0">
+    <h2>you have no conversations yet</h2>
+  </div>
+</div>

@@ -13,4 +13,18 @@ class Message < ActiveRecord::Base
     end
   end
 
+  def get_other_user(user_id)
+    msg = Message.find(id)
+    if msg.conversation.user_1 == user_id
+      return User.find(msg.conversation.user_2)
+    else
+      return User.find(msg.conversation.user_1)
+    end
+  end
+
+  def get_user
+    msg = Message.find(id)
+    user = User.find(msg.user_id)
+  end
+
 end

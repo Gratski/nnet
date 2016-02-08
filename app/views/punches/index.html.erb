@@ -1,0 +1,18 @@
+<div class="col-md-12" ng-controller="punches">
+  
+  <h1>Punches</h1>
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" id="my_punches_tab" ng-click="show_my_punches()" class="active"><a>My punches</a></li>
+    <li role="presentation" id="punched_me_tab" ng-click="show_punched_me()"><a>Punched by</a></li>
+  </ul>
+  
+  <!-- punches -->
+  <div class="col-md-12" ng-show="view == 'my_punches'">
+    
+    <div class="col-md-12" ng-repeat="punch in my_punches.list">
+      {{punch.name}}, <a class="btn btn-xs btn-danger" ng-click="unpunch(punch.user_id)">unpunch</a>
+    </div>
+
+  </div>
+
+</div>
