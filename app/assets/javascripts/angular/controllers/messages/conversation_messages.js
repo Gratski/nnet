@@ -24,5 +24,7 @@
 
   }
 
+  controller.$inject = ['$scope', '$http', '$window', '$routeParams']
+
   angular.module('social').controller('conversation', controller)
 }())

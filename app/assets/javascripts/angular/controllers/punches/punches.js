@@ -67,5 +67,7 @@
 
   }
 
+  controller.$inject = ['$scope', '$http', '$window']
+
   angular.module('social').controller('punches', controller)
 }())

@@ -30,5 +30,4 @@
 
 //= require angular/controllers/punches/punches.js
 
-//= require turbolinks
 //= require_tree .
