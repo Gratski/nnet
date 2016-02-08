@@ -1,6 +1,7 @@
 (function(){
 
-  var controller = function($scope, $http, $window){
+
+  angular.module('social').controller('signup', ['$scope', '$http', '$window', function($scope, $http, $window) { 
 
     $scope.errors =  {}
 
@@ -57,8 +58,7 @@
 
       return valid
     }
-
-  }
-
-  angular.module('social').controller('signup', controller)
+        
+  }]);
+  
 }())

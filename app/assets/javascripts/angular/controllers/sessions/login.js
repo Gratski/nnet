@@ -1,6 +1,6 @@
 (function(){
 
-  angular.module('social').controller('login', ['$scope', '$http', '$window', function($scope) { 
+  angular.module('social').controller('login', ['$scope', '$http', '$window', function($scope, $http, $window) { 
         //your minsafe controller
         $scope.submit = function(){
 
