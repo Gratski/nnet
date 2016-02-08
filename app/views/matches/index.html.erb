@@ -1,1 +1,64 @@
-MATCHES LIST
+<div class="col-md-12" ng-controller="matches">
+
+  <div class="col-md-3 well text-center" style="padding:2px; position:relative;" ng-repeat="match in matches.list">
+
+    <!-- STATUS -->
+    <span class="badge badge-success" style="position:absolute; top:10px; right:10px;">&nbsp;</span>
+
+    <!-- USERNAME -->
+    <div class="col-md-12" style="z-index:1000; position:absolute; background-color:#eee; font-size:1.2em; color:#FFF; top:180px;">
+      {{match.user.name}}
+    </div>
+
+    <!-- user picture -->
+    <div class="col-md-12">
+      <img src="http://lorempixel.com/200/200" alt="{{match.name}}">
+    </div>
+
+    <!-- user details -->
+    <div class="col-md-12">
+      
+      <div class="col-md-4" ng-if="match.friends">
+        <button class="btn btn-xs btn-primary" ng-click="open_send_message(match.user.id)">MSG</button>
+      </div>
+      <div class="col-md-4">
+        <a href="/users/{{match.user.id}}">Profile</a>
+      </div>
+      <div class="col-md-4">
+        <span ng-if="match.friends">FRIENDS</span>
+        <span ng-if="match.punched_me" ng-click="punch_back(match.user.id)">Punch back!</span>
+        <span ng-if="match.punched">Punched</span>
+        <span ng-if="match.fresh" ng-click="punch(match.user.id)">PUNCH</span>
+      </div>
+
+    </div>
+
+  </div>
+  
+  <!-- Send Message Modal -->
+  <div id="sendMessageModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" ng-click="open_send_message(1)">Send Message</h4>
+        </div>
+        <div class="modal-body">
+          <div class="inpup-group">
+            <textarea ng-model="message.body" class="form-control" aria-describedby="send-addon"></textarea>
+          </div>
+          <div class="inpup-group">            
+            <button ng-if="!message.sending && !message.confirmation" class="btn btn-lg btn-success" style="width:100%;" ng-click="send_message()">SEND</button>
+            <span ng-if="message.sending">Sending...</span>
+            <span ng-if="message.confirmation">Your message is flying!</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

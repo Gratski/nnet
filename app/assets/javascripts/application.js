@@ -28,6 +28,9 @@
 //= require angular/controllers/messages/conversation_messages.js
 //= require angular/controllers/messages/messages.js
 
+//= require angular/controllers/matches/matches.js
+//= require angular/controllers/matches/filter.js
+
 //= require angular/controllers/punches/punches.js
 
 //= require_tree .

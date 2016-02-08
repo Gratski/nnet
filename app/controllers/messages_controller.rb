@@ -20,8 +20,21 @@ class MessagesController < ApplicationController
 
   #POST
   def create
-    conversation_id = params[:conversation_id]
-    user_id = params[:user_id]
+    #se passada a conversation
+    if params[:conversation_id]
+      conversation_id = params[:conversation_id]
+    else
+      conversation = Conversation.where("user_1 = #{current_user.id} AND user_2 = #{params[:user_id]} OR user_1 = #{params[:user_id]} AND user_2 = #{current_user.id}").first
+      #se a conversation ja existe
+      if conversation
+        conversation_id = conversation.id
+      #se nao existe criar uma nova
+      else
+        conversation = Conversation.create(user_1: current_user.id, user_2: params[:user_id])
+        conversation_id = conversation.id
+      end
+    end
+    user_id = current_user.id
     body = params[:body]
     message = Message.new(conversation_id: conversation_id, user_id: user_id, body: body )
     if message.save

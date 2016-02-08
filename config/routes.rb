@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   #MATCHES
   get 'matches' => 'matches#index'
+  get '/api/matches/:offset/:limit' => 'matches#get_matches'
 
   #PUNCHES
   get   'punches'    => 'punches#index'

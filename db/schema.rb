@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160207144903) do
+ActiveRecord::Schema.define(version: 20160208175436) do
 
   create_table "cities", force: :cascade do |t|
     t.integer  "country_id"
@@ -119,11 +119,14 @@ ActiveRecord::Schema.define(version: 20160207144903) do
     t.string   "email"
     t.string   "confirmation_token"
     t.boolean  "active"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "password_digest"
     t.boolean  "admin"
     t.date     "birthdate"
+    t.boolean  "premium",            default: false
+    t.date     "premium_payment"
+    t.date     "premium_valid_date"
   end
 
 end

@@ -44,6 +44,23 @@ class User < ActiveRecord::Base
     punch.size > 0 ? true : false
   end
 
+  def already_punched_me(user_id)
+    user = Punch.where(user_id: user_id, user_punched_id: id).first
+    if user
+      return true
+    else 
+      return false
+    end
+  end
+
+  def friends_with?(user_id)
+    if already_punched?(user_id) and already_punched_me(user_id)
+      return true
+    else
+      return false
+    end
+  end
+
   #to hash the password
   has_secure_password
 
