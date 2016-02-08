@@ -1,22 +1,19 @@
 (function(){
 
-  var controller = function($scope, $http, $window){
+  angular.module('social').controller('login', ['$scope', '$http', '$window', function($scope) { 
+        //your minsafe controller
+        $scope.submit = function(){
 
-    $scope.submit = function(){
+          $http.post('/api/sessions/create', {login: {email: $scope.email, password: $scope.password}})
+          .success(function(data, status, headers, config){
+            jq('#login_modal').modal('hide')
+            $window.location.href = "/matches"
+          })
+          .error(function(data, status, headers, config){
+            alert('error')
+          })
 
-      $http.post('/api/sessions/create', {login: {email: $scope.email, password: $scope.password}})
-      .success(function(data, status, headers, config){
-        jq('#login_modal').modal('hide')
-        $window.location.href = "/matches"
-      })
-      .error(function(data, status, headers, config){
-        alert('error')
-      })
-
-    }
-
-  }
-
-
-  angular.module('social').controller('login', controller)
+        }
+  }]);
+  
 }())
