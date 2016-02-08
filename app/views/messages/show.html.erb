@@ -4,21 +4,24 @@
 
     <!-- TOP -->
     <div class="col-md-12">
-      <a class="lead"><</a>
+      <a class="lead" ng-click="back()"><</a>
       <a href="/users/<%= @other_user.id %>" class="lead pull-right"><%= @other_user.name %>'s profile</a>
     </div>
 
     <!-- Messages box -->
-    <div class="col-md-12" style="height:200px;">
+    <div class="col-md-12 text-center" id="box" style="max-height:400px; overflow:auto;">
       
+      <!-- LOAD MORE BUTTON -->
+      <p><button class="btn btn-xs" ng-click="load_more()">load more</button></p>
+
       <!-- Messages list -->
       <div class="col-md-12" ng-repeat="message in messages">
         
-        <!-- if is this user's message -->
+        <!-- if is friend's message -->
         <div class="col-md-12"  ng-if="message.user_id != <%= @user.id %>">
           
-          <div class="col-md-8 pull-right">
-            <div class="col-md-8 text-right">
+          <div class="pull-right well">
+            <div class="text-right" style="background-color: #f1c40f; color:#FFF; width:auto;">
               {{message.body}}
             </div>
             <div class="col-md-4 text-right">
@@ -30,10 +33,10 @@
 
 
         <!-- else -->
-        <div class="col-md-12"  ng-if="message.user_id == <%= @user.id %>">
+        <div class="col-md-12" ng-if="message.user_id == <%= @user.id %>">
           
           <div class="col-md-8 pull-left">
-            <div class="col-md-8 text-left">
+            <div class="text-left" style="background-color: #3498db; color:#FFF; padding:2px; border-border-radius: 5px; -moz-border-radius: 10px 10px 10px 10px;">
               {{message.body}}
             </div>
           </div>
@@ -41,14 +44,19 @@
         </div>
 
       </div>
-    </div>
 
-    <!-- TYPING AREA -->  
+    </div>
+    <!-- TYPING AREA -->
+  <div class="col-md-12" style="margin-top:15px;">
+    <form ng-submit="send(<%= @conversation.id %>, <%= @user.id %>)">
     <div class="input-group">
-      <textarea type="text" ng-model="message" class="form-control" placeholder="Type your message" aria-describedby="basic-addon1"></textarea>
-      <span class="input-group-addon" ng-click="send(<%= @conversation.id %>, <%= @user.id %>)" id="basic-addon1">SEND</span>
+        <input type="text" ng-model="message" class="form-control" placeholder="Type your message" aria-describedby="basic-addon1"/>
+        <span class="input-group-addon" style="color: #3498db; background-color:#FFF" ng-click="send(<%= @conversation.id %>, <%= @user.id %>)" id="basic-addon1">
+        <i class="glyphicon glyphicon-send"></i>
+        </span>
     </div>
-
+    </form>
+  </div>
   </div>
 
 </div>

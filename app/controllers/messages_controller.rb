@@ -13,7 +13,8 @@ class MessagesController < ApplicationController
   def show
     @user = current_user
     @conversation = Conversation.find(params[:id])
-    @messages = @conversation.messages
+    @messages = @conversation.messages.order("id DESC").limit(10)
+    @messages = @messages.reverse
     @other_user = @conversation.get_other_user(@user.id)
   end
 
@@ -67,9 +68,13 @@ class MessagesController < ApplicationController
   end
 
   def get_messages
-    msgs = Message.joins(:user).where(conversation_id: params[:id])
-    user = msgs.first.get_other_user(current_user.id)
-    render json: {:msgs => msgs, :user => user}, status: :ok
+    msgs = Message.joins(:user).where(conversation_id: params[:id]).offset(params[:offset].to_i).order("id DESC")
+    if msgs.size > 0
+      user = msgs.first.get_other_user(current_user.id)
+      render json: {:msgs => msgs, :user => user}, status: :ok
+    else
+      render json: {:msgs => msgs}, status: :ok
+    end
   end
 
 end

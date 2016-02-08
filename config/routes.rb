@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   #MESSAGES
   resources :messages
   get '/api/messages'  => 'messages#get_conversations'
-  get '/api/messages/:id' => 'messages#get_messages'
+  get '/api/messages/:id/:offset/:limit' => 'messages#get_messages'
   post '/api/messages' => 'messages#create'
   delete '/api/messages/:id' => 'messages#destroy'
 

@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
-//= require angular
+//= require angular/angular.min.js
 
 //= require angular/core/application.js
 
