@@ -1,6 +1,6 @@
 (function(){
 
-  angular.module('social').controller('conversation', ['$scope', '$http', '$window', '$routeParams', function($scope, $http, $window, $routeParams) { 
+  angular.module('social').controller('conversation', ['$scope', '$http', '$window', function($scope, $http, $window) { 
         //your minsafe controller
         $scope.limit = 10
 
@@ -39,7 +39,6 @@
           $window.history.back()
         }
 
-        $scope.idd = $routeParams.messagesId
   }]);
 
 }())

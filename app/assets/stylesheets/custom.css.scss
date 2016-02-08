@@ -2,11 +2,17 @@
 @import "bootstrap";
 
 .navbar{
-  background-color: #FFF;
+  background-color: #3498db;
+  color:#FFF;
+}
+
+.navbar a:link{
+  color:#FFF;
 }
 .navbar-brand{
   font-size:1.5em;
   font-weight: bold;
+  color:#FFF;
 }
 
 .jumbotron{
