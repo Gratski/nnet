@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208175436) do
+ActiveRecord::Schema.define(version: 20160209223039) do
 
   create_table "cities", force: :cascade do |t|
     t.integer  "country_id"
@@ -53,6 +53,13 @@ ActiveRecord::Schema.define(version: 20160208175436) do
     t.text     "self_description"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "hair_color"
+    t.string   "eye_color"
+    t.float    "height"
+    t.string   "body_type"
+    t.string   "body_color"
+    t.string   "religion"
+    t.integer  "sector_area_id"
   end
 
   create_table "interests", force: :cascade do |t|
@@ -81,16 +88,14 @@ ActiveRecord::Schema.define(version: 20160208175436) do
   create_table "sector_areas", force: :cascade do |t|
     t.integer  "sector_id"
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sectors", force: :cascade do |t|
     t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", force: :cascade do |t|

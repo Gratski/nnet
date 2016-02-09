@@ -33,4 +33,7 @@
 
 //= require angular/controllers/punches/punches.js
 
+//= require angular/controllers/settings/settings.js
+//= require angular/controllers/settings/change_password.js
+
 //= require_tree .

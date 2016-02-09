@@ -5,8 +5,9 @@ class SessionsController < ApplicationController
 
   #POST
   def new
-    @user = User.new(params.require(:sign_up).permit(:email, :password))
+    @user = User.new(params.require(:sign_up).permit(:name, :email, :password))
     if @user.save
+      Detail.create(user_id: @user.id)
       render nothing:true, status: :accepted
     else
       render nothing:true, status: :bad_request

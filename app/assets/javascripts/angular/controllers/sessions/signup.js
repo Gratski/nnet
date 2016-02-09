@@ -10,7 +10,7 @@
       if (!$scope.valid_password || !$scope.valid_email)
         return false
 
-      $http.post('/api/sessions/new', {sign_up: {email: $scope.email, password: $scope.password}})
+      $http.post('/api/sessions/new', {sign_up: {name: $scope.username, email: $scope.email, password: $scope.password}})
       .success(function(data, status, headers, config){
         jq('#signup_modal').modal('hide')
       })

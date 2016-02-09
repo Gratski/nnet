@@ -1,0 +1,28 @@
+<div class="col-md-12" ng-controller="change_profession">
+  
+  <p class="lead">Change profession</p>
+
+  <form>
+    <div class="form-group">
+      <label class="color-grey">Select your professional sector</label>
+      <select ng-model="sector" class="form-control" placeholder="oioi">
+        <option value="1">IT</option>
+        <option value="2">Engineering</option>
+      </select>
+    </div>
+    <div class="form-group" ng-if="sector != 0">
+      <label class="color-grey">Sector Area</label>
+      <select ng-model="sector_area" class="form-control">
+        <option value="0" selected="selected">Sector Area</option>
+        <option value="1">Development</option>
+        <option value="2">Programming</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-danger" ng-click="change()">Change Profession</button>
+      &nbsp;&nbsp;
+      | <a href="/settings" style="color:#cc181e;">cancel</a>
+    </div>
+  </form>
+
+</div>

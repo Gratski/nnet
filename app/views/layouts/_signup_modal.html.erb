@@ -6,24 +6,31 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Sign up</h4>
+        <h4 class="modal-title color-red">Sign up</h4>
       </div>
       <div class="modal-body">
         <form ng-submit="submit()">
           <div class="form-group">
-            <input type="text" class="form-control" ng-model="email" placeholder="Email" ng-required>
+            <input type="text" class="form-control" ng-model="username" placeholder="username" required="required">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" ng-model="password" placeholder="Password" ng-required>
+            <input type="email" class="form-control" ng-model="email" placeholder="Email" required="required">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" ng-model="password_confirmation" placeholder="Password confirmation" ng-required>
+            <input type="password" class="form-control" ng-model="password" placeholder="Password" required="required">
           </div>
           <div class="form-group">
-            Agree with terms&nbsp; <input type="checkbox" ng-model="terms" class="form-control" ng-required>
+            Agree with terms&nbsp; <input type="checkbox" ng-model="terms" required="required">
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-lg btn-success">Sign up</button>
+          <div class="form-group text-right">
+            <span class="color-grey">
+              forgot your password
+            </span>
+            &nbsp;|&nbsp;
+            <span data-target="#login_modal" class="color-grey">
+              sign in
+            </span>
+            <button type="submit" class="btn btn-danger">Sign up</button>
           </div>
         </form>
       </div>

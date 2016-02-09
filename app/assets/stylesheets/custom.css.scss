@@ -1,12 +1,46 @@
 body{
   font-family: 'Trebuchet MS', Helvetica, sans-serif;
+  font-weight: 300;
 }
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+.color-red{
+  color:#cc181e;
+}
+
+.font-big{
+  font-size:3em;
+}
+
+.font-small{
+  font-size:1.2em;
+}
+
+.font-grey{
+  color:#666;
+}
+
+.dropdown-menu a{
+  color:#FFF;
+}
+
+.btn{
+  border:none;
+}
+.btn-success{
+  background-color:#559900;
+}
+.btn-danger{
+  background-color:#cc181e;
+}
+.btn-primary{
+  background-color:#2793e8;
+}
+
 .navbar{
-  background-color: #3498db;
+  background-color: #FFF;
   color:#FFF;
 }
 .navbar li a:link, a:hover, a:visited{
@@ -27,6 +61,7 @@ body{
 
 
 .jumbotron{
+  margin-top:-20px;
   background: none;
 }
 
@@ -45,3 +80,16 @@ body{
   color:#999;
 }
 
+
+
+.footer{
+  background: rgba(204,24,30,1);
+  background: -moz-linear-gradient(left, rgba(204,24,30,1) 0%, rgba(204,24,30,1) 23%, rgba(227,20,27,1) 51%, rgba(204,24,30,1) 89%, rgba(204,24,30,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(204,24,30,1)), color-stop(23%, rgba(204,24,30,1)), color-stop(51%, rgba(227,20,27,1)), color-stop(89%, rgba(204,24,30,1)), color-stop(100%, rgba(204,24,30,1)));
+  background: -webkit-linear-gradient(left, rgba(204,24,30,1) 0%, rgba(204,24,30,1) 23%, rgba(227,20,27,1) 51%, rgba(204,24,30,1) 89%, rgba(204,24,30,1) 100%);
+  background: -o-linear-gradient(left, rgba(204,24,30,1) 0%, rgba(204,24,30,1) 23%, rgba(227,20,27,1) 51%, rgba(204,24,30,1) 89%, rgba(204,24,30,1) 100%);
+  background: -ms-linear-gradient(left, rgba(204,24,30,1) 0%, rgba(204,24,30,1) 23%, rgba(227,20,27,1) 51%, rgba(204,24,30,1) 89%, rgba(204,24,30,1) 100%);
+  background: linear-gradient(to right, rgba(204,24,30,1) 0%, rgba(204,24,30,1) 23%, rgba(227,20,27,1) 51%, rgba(204,24,30,1) 89%, rgba(204,24,30,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc181e', endColorstr='#cc181e', GradientType=1 );
+  color:#FFF;
+}

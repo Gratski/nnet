@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   #USERS
   resources :users
   get 'users/edit' => 'users#edit'
+  post '/api/users/password' => 'users#password'
 
   #MESSAGES
   resources :messages
@@ -36,6 +37,11 @@ Rails.application.routes.draw do
   #MESSAGES
   get 'messages' => 'messages#index'
   get 'messages/:id' => 'messages#show'
+
+  #SETTINGS
+  get 'settings' => 'settings#index'
+  get 'settings/password' => 'settings#password'
+  get 'settings/profession' => 'settings#profession'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

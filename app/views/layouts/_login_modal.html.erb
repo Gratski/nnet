@@ -6,8 +6,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Sign in</h4>
+        <h4 class="modal-title color-red">Sign in</h4>
       </div>
+
       <div class="modal-body">
         <form ng-submit="submit()">
           <div class="form-group">
@@ -16,11 +17,32 @@
           <div class="form-group">
             <input type="password" class="form-control" ng-model="password" placeholder="Password" ng-required>
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-lg btn-success">Sign in</button>
+          <div class="form-group text-right">
+            <span class="color-grey">
+              forgot your password
+            </span>
+            &nbsp;|&nbsp;
+            <span data-target="#signup_modal" class="color-grey">
+              sign up
+            </span>
+            <button type="submit" class="btn btn-danger">Sign in</button>
           </div>
         </form>
       </div>
+
+      <div class="modal-footer">
+        <div class="col-md-12 text-center">
+          
+          <div class="col-md-6 text-center">
+            FACEBOOK
+          </div>
+          <div class="col-md-6 text-center">
+            GOOGLE+
+          </div>
+
+        </div>  
+      </div>
+
     </div>
 
   </div>
