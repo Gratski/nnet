@@ -12,9 +12,8 @@ class UsersController < ApplicationController
   end
 
   #API
-  #POST
+  #--- PUT
   def password
-    
     if current_user.authenticate(params[:password])
       if current_user.update(password: params[:new_password])
         render nothing:true, status: :accepted
@@ -24,6 +23,15 @@ class UsersController < ApplicationController
     else
       render nothing:true, status: :unauthorized
     end
-
+  end
+  def sector_area
+    @user = current_user
+    @details = @user.detail
+    @details.sector_area_id = params[:sector_area_id].to_i
+    if @details.save
+      render nothing:true, status: :ok
+    else
+      render nothing:true, status: :not_acceptable
+    end
   end
 end

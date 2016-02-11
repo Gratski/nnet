@@ -15,9 +15,16 @@
 //= require bootstrap-sprockets
 
 //= require angular/angular.min.js
+//= require angular/angular-route.js
 
 //= require angular/core/application.js
 
+///////////SERVICES
+//= require angular/services/sectors/basic.js
+//= require angular/services/users/basic.js
+//= require angular/services/url/url.js
+
+//////////CONTROLLERS
 //= require angular/controllers/main/main.js
 //= require angular/controllers/sessions/login.js
 //= require angular/controllers/sessions/logout.js

@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   #USERS
   resources :users
   get 'users/edit' => 'users#edit'
-  post '/api/users/password' => 'users#password'
+  put '/api/users/password' => 'users#password' #change to PUT
+  put '/api/users/sector_area' => 'users#sector_area'
 
   #MESSAGES
   resources :messages
@@ -15,7 +16,8 @@ Rails.application.routes.draw do
   delete '/api/messages/:id' => 'messages#destroy'
 
   #SECTORS
-  resources :sectors
+  get '/api/sectors' => 'sectors#all'
+  get '/api/sector_areas/:id' => 'sectors#areas'
 
   #SESSIONS
   post 'api/sessions/new'      => 'sessions#new'
@@ -42,6 +44,9 @@ Rails.application.routes.draw do
   get 'settings' => 'settings#index'
   get 'settings/password' => 'settings#password'
   get 'settings/profession' => 'settings#profession'
+
+  #SEARCH
+  get '/api/search/:offset/:limit' => 'searches#get'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

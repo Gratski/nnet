@@ -1,6 +1,6 @@
 (function(){
 
-  angular.module('social').controller('change_password', ['$scope', '$http', '$window', '$routeParams', function($scope, $http, $window, $routeParams){
+  angular.module('social').controller('change_password', ['$scope', 'users_service', '$http', '$window', '$routeParams', function($scope, users_service, $http, $window, $routeParams){
 
     $scope.password = {}
     $scope.password.cur;
@@ -18,7 +18,7 @@
 
       $scope.errors = {}
 
-      $http.post('/api/users/password', {password: $scope.password.cur, new_password: $scope.password.newpass})
+      users_service.update_password($scope.password.cur, $scope.password.newpass)
       .success(function(data, status, headers, config){
         $scope.password = {}
         $window.history.back()

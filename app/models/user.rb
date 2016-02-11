@@ -3,9 +3,6 @@ class User < ActiveRecord::Base
   has_many :punches
   has_many :user_puncheds, through: :punches
 
-  has_one :user_city
-  has_one :city, through: :user_city
-
   has_many :messages
 
   has_many :topics
@@ -16,6 +13,8 @@ class User < ActiveRecord::Base
   has_many :sectors, through: :user_sectors
 
   has_many :deleted_conversations
+
+  has_one :search
 
   #get this user conversations
   def conversations
@@ -59,6 +58,14 @@ class User < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def city
+    City.where(id: city_id).first
+  end
+
+  def country
+    Country.where(id: country_id).first
   end
 
   #to hash the password

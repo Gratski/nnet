@@ -5,37 +5,31 @@
   </p>
   
   <!-- GENERAL DETAILS -->
-  <div class="col-md-12">
-    
-    <table>
+  <div class="col-md-12">  
+    <table class="table">
       <tr>
         <td><b>Name</b></td>
         <td>{{user.name}}</td>
       </tr>
       <tr>
-        <td> <b>Birthdate</b> </td>
-        <td>{{user.birthdate}}</td>
+        <td><b>Email<b></td>
+        <td>{{user.email}}</td>
       </tr>
-      <tr>
-        <td> <b>Location</b> </td>
-        <td>Lisbon, Portugal</td>
-      </tr>
-      <tr>
-        <td> <b>Work</b> </td>
-        <td>Software Developer</td>
-      </tr>
-    </table>
 
-  </div>
-
-  <!-- PASSWORD DETAILS -->
-  <div class="col-md-12">
-    <table>
       <tr>
         <td> <b>Password&nbsp;</b></td>
-        <td><a href="/settings/password" style="color:#cc181e;">change&nbsp;</a></td>
-        <td> <i class="glyphicon glyphicon-lock color-grey"></i> </td>
+        <td>
+          <a href="/settings/password" style="color:#cc181e;">change&nbsp;</a>
+          &nbsp;&nbsp;
+          <i class="glyphicon glyphicon-lock color-grey"></i>
+        </td>
       </tr>
+
+    <tr>
+      <td></td>
+      <td><%= @user.available_punches %> punches left&nbsp; 
+        <button class="btn btn-xs btn-success no-border">get more</button></td>
+    </tr>
     </table>
   </div>
 

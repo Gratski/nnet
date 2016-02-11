@@ -6,8 +6,10 @@ class SessionsController < ApplicationController
   #POST
   def new
     @user = User.new(params.require(:sign_up).permit(:name, :email, :password))
+    @user.available_punches = 10;
     if @user.save
       Detail.create(user_id: @user.id)
+      Search.create(user_id: @user.id)
       render nothing:true, status: :accepted
     else
       render nothing:true, status: :bad_request

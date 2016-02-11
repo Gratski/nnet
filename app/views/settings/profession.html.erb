@@ -5,17 +5,14 @@
   <form>
     <div class="form-group">
       <label class="color-grey">Select your professional sector</label>
-      <select ng-model="sector" class="form-control" placeholder="oioi">
-        <option value="1">IT</option>
-        <option value="2">Engineering</option>
+      <select ng-model="selected_sector" class="form-control" placeholder="oioi">
+        <option ng-repeat="sector in sectors" value="{{sector.id}}">{{sector.name}}</option>
       </select>
     </div>
-    <div class="form-group" ng-if="sector != 0">
+    <div class="form-group" ng-if="selected_sector != undefined && selected_sector != 'undefined'">
       <label class="color-grey">Sector Area</label>
-      <select ng-model="sector_area" class="form-control">
-        <option value="0" selected="selected">Sector Area</option>
-        <option value="1">Development</option>
-        <option value="2">Programming</option>
+      <select ng-model="selected_sector_area" class="form-control">
+        <option ng-repeat="sector_area in sector_areas" value="{{sector_area.id}}" selected="selected">{{sector_area.name}}</option>
       </select>
     </div>
     <div class="form-group">

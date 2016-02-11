@@ -1,6 +1,30 @@
 (function(){
 
-  angular.module('social').controller('matches', ['$scope', '$http', '$window', '$routeParams', function($scope, $http, $window, $routeParams){
+  angular.module('social').controller('matches', ['$scope', '$http', '$window', 'urlParser', function($scope, $http, $window, urlParser){
+
+    //set filtering painel to hidden
+    $scope.filtering = false
+    $scope.showFilter = function(){
+      if ($scope.filtering)
+      {
+        $scope.filtering = false
+      }else{
+        $scope.filtering = true
+      }
+    }
+    
+
+    $http.get('/api/search/0/20')
+    .success(function(data, status, headers, config){
+      console.log('SEARCH RESULTS')
+      console.log(data)
+    })
+    .error(function(data, status, headers, config){
+      console.log('SEARCH ERROR')
+    })
+
+    //obtaining params
+    $scope.params = urlParser.parse($window.location.href)
 
     //Send Message
     $scope.message = {}
@@ -18,8 +42,19 @@
     $scope.pagination = {}
     $scope.pagination.per_page = 20
     $scope.number_of_pages = Math.ceil( $scope.matches.total / $scope.per_page )
-    $scope.pagination.cur = $routeParams['page']
+    $scope.pagination.cur;
 
+
+    //BLUR
+    $scope.setBlurOrNot = function(match){
+      if (match.friends)
+        return ''
+      else
+        return 'blur'
+    }
+
+
+    //MESSAGES
     $scope.open_send_message = function(user_id){
       $scope.message.to = user_id
       //open modal
@@ -40,7 +75,6 @@
         $scope.message.sending = false
       })
     }
-
     $scope.count_matches = function(){
 
     }

@@ -1,4 +1,79 @@
 <div class="col-md-12" ng-controller="matches">
+  
+  <div ng-view></div>
+
+  <p>
+    Looking for matches
+    <span ng-if="params.city || params.country">in </span>
+    <span ng-if="params.city">{{params.city}}, </span>
+    <span ng-if="params.country">{{params.country}}, </span> 
+    <span ng-if="params.age_min && params.age_max">aged between {{params.age_min}} and {{params.age_max}} years old</span>
+    <span ng-if="params.age_min && !params.age_max"> over {{params.age_min}} years old </span>
+    <span ng-if="!params.age_min && params.age_max"> under {{params.age_max}} years old </span> 
+    | 
+    <a ng-click="showFilter()" style="color:#cc181e;">change filter</a>
+    </p>
+
+  <div ng-if="filtering" ng-controller="matches_filter" class="well" style="background:none; background-color:#EFEFEF;">
+    
+    <form class="form-horizontal">
+
+      <!-- LOCATION -->
+      <div class="form-group">
+        <div class="col-md-12 no-padding">
+          <div class="col-md-6">
+            Country<input type="text" class="col-md-6 form-control" placeholder="Location">
+          </div>
+          <div class="col-md-6">
+            City<input type="text" class="col-md-6 form-control" placeholder="Location">  
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="form-group">
+        <div class="col-md-12 no-padding">
+          <div class="col-md-8 no-padding">
+            Age
+          </div>
+          <div class="col-md-4 text-left">
+            Who is Looking for
+          </div>
+        </div>
+
+        <!-- AGE -->
+        <div class="col-md-6 no-padding">
+          <div class="col-md-2 text-left">
+            <input type="text" class="form-control" placeholder="Min">
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Max">
+          </div>
+        </div>
+
+        <!-- LOOKING FOR -->
+        <div class="col-md-6 no-padding">
+          <div class="col-md-12">
+            <select class="form-control">
+              <option value="">New friends</option>
+              <option value="">Something special</option>
+              <option value="">Date</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SUBMIT -->
+      <div class="form-group">
+        <div class="col-md-12">
+          <button class="btn btn-success" style="width:100%;">
+            Filter
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
 
   <div class="col-md-3 well text-center" style="padding:2px; position:relative;" ng-repeat="match in matches.list">
 
@@ -12,9 +87,8 @@
 
     <!-- user picture -->
     <div class="col-md-12">
-      <img src="http://lorempixel.com/200/200" alt="{{match.name}}">
+      <img ng-class="setBlurOrNot(match)" src="http://lorempixel.com/200/200" alt="{{match.name}}">
     </div>
-
     <!-- user details -->
     <div class="col-md-12">
       

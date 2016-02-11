@@ -36,12 +36,20 @@ class PunchesController < ApplicationController
   #POST
   def punch
     user = User.find(params[:id])
+    #test if user has some punch left
+    if user.available_punches == 0
+      render nothing:true, status: :not_acceptable
+    end
+
+
     if user
       punch = Punch.new(user_id: current_user.id, user_punched_id: params[:id])
       if punch.save
+        user.available_punches = user.available_punches - 1
+        user.save
         render nothing:true, status: :created
       else
-        render nothing:true, status: :not_acceptable
+        render nothing:true, status: :bad_request
       end
     else
       render nothing:true, status: :conflict
