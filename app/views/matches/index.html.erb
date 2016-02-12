@@ -1,138 +1,160 @@
 <div class="col-md-12" ng-controller="matches">
   
-  <div ng-view></div>
-
   <p>
-    Looking for matches
-    <span ng-if="params.city || params.country">in </span>
-    <span ng-if="params.city">{{params.city}}, </span>
-    <span ng-if="params.country">{{params.country}}, </span> 
-    <span ng-if="params.age_min && params.age_max">aged between {{params.age_min}} and {{params.age_max}} years old</span>
-    <span ng-if="params.age_min && !params.age_max"> over {{params.age_min}} years old </span>
-    <span ng-if="!params.age_min && params.age_max"> under {{params.age_max}} years old </span> 
-    | 
-    <a ng-click="showFilter()" style="color:#cc181e;">change filter</a>
-    </p>
+      Looking for matches
+      <span ng-if="searchParams.city || searchParams.country">in </span>
+      <span ng-if="searchParams.city">{{searchParams.city.name}}, </span>
+      <span ng-if="searchParams.country">{{searchParams.country.name}}, </span> 
+      <span ng-if="searchParams.min_age && searchParams.max_age">aged between {{searchParams.min_age}} and {{searchParams.max_age}} years old</span>
+      <span ng-if="searchParams.min_age && !searchParams.max_age"> over {{searchParams.min_age}} years old </span>
+      <span ng-if="!searchParams.min_age && searchParams.max_age"> under {{searchParams.max_age}} years old </span> 
+      | 
+      <a ng-click="showFilter()" style="color:#cc181e;">change filter</a>
+      </p>
 
-  <div ng-if="filtering" ng-controller="matches_filter" class="well" style="background:none; background-color:#EFEFEF;">
-    
-    <form class="form-horizontal">
-
-      <!-- LOCATION -->
-      <div class="form-group">
-        <div class="col-md-12 no-padding">
-          <div class="col-md-6">
-            Country<input type="text" class="col-md-6 form-control" placeholder="Location">
-          </div>
-          <div class="col-md-6">
-            City<input type="text" class="col-md-6 form-control" placeholder="Location">  
-          </div>
-        </div>
-      </div>
-
+    <div ng-if="filtering" ng-controller="matches_filter" class="well" style="background:none; background-color:#EFEFEF;">
       
-      <div class="form-group">
-        <div class="col-md-12 no-padding">
-          <div class="col-md-8 no-padding">
-            Age
-          </div>
-          <div class="col-md-4 text-left">
-            Who is Looking for
+      <form class="form-horizontal">
+
+        <!-- LOCATION -->
+        <div class="form-group">
+          <div class="col-md-12 no-padding">
+            <div class="col-md-6">
+              <select ng-model="filter.country.selected">
+                <option ng-repeat="country in filter.country.list" class="form-control" ng-click="get_cities(country.id)" value="{{country.id}}">{{country.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-6" ng-if="filter.country.selected">
+              <select ng-model="filter.city.selected">
+                <option ng-repeat="city in filter.city.list" class="form-control" value="{{city.id}}">{{city.name}}</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <!-- AGE -->
-        <div class="col-md-6 no-padding">
-          <div class="col-md-2 text-left">
-            <input type="text" class="form-control" placeholder="Min">
+        
+        <div class="form-group">
+          <div class="col-md-12 no-padding">
+            <div class="col-md-8 no-padding">
+              Age
+            </div>
+            <div class="col-md-4 text-left">
+              Who is Looking for
+            </div>
           </div>
-          <div class="col-md-2">
-            <input type="text" class="form-control" placeholder="Max">
+
+          <!-- AGE -->
+          <div class="col-md-6 no-padding">
+            <div class="col-md-2 text-left">
+              <input type="text" ng-model="filter.age.min" class="form-control" placeholder="Min">
+            </div>
+            <div class="col-md-2">
+              <input type="text" ng-model="filter.age.max" class="form-control" placeholder="Max">
+            </div>
+          </div>
+
+          <!-- LOOKING FOR -->
+          <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+              <select class="form-control" ng-model="filter.looking_for">
+                <option value="">New friends</option>
+                <option value="">Something special</option>
+                <option value="">Date</option>
+              </select>
+            </div>
           </div>
         </div>
-
-        <!-- LOOKING FOR -->
-        <div class="col-md-6 no-padding">
+        
+        <!-- SUBMIT -->
+        <div class="form-group">
           <div class="col-md-12">
-            <select class="form-control">
-              <option value="">New friends</option>
-              <option value="">Something special</option>
-              <option value="">Date</option>
-            </select>
+            <button class="btn btn-success" ng-click="filter.update()" style="width:100%;">
+              Filter
+            </button>
           </div>
         </div>
+      </form>
+    </div>
+
+    <!-- pagination -->
+    <nav>
+      <ul class="pagination">
+        <li>
+          <a aria-label="Previous" ng-class="{'disabled':pagination.cur == 1}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li ng-repeat="i in getPages(number_of_pages)" ng-class="{'active':pagination.cur == i}"><a href="/matches?page={{i}}">{{i}}</a></li>
+        <li>
+          <a href="#" aria-label="Next" ng-class="{'disabled':pagination.cur == number_of_pages}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+
+    <p ng-if="searching">Searching...</p>
+
+    <div class="col-md-3 well text-center" style="padding:2px; position:relative;" ng-repeat="match in matches.list">
+
+      <!-- STATUS -->
+      <span class="badge badge-success" style="position:absolute; top:10px; right:10px;">&nbsp;</span>
+
+      <!-- USERNAME -->
+      <div class="col-md-12" style="z-index:1000; position:absolute; background-color:#eee; font-size:1.2em; color:#FFF; top:180px;">
+        {{match.user.name}}
       </div>
-      
-      <!-- SUBMIT -->
-      <div class="form-group">
-        <div class="col-md-12">
-          <button class="btn btn-success" style="width:100%;">
-            Filter
-          </button>
+
+      <!-- user picture -->
+      <div class="col-md-12">
+        <img ng-class="setBlurOrNot(match)" src="http://lorempixel.com/200/200" alt="{{match.name}}">
+      </div>
+      <!-- user details -->
+      <div class="col-md-12">
+        
+        <div class="col-md-4" ng-if="match.friends">
+          <button class="btn btn-xs btn-primary" ng-click="open_send_message(match.user.id)">MSG</button>
         </div>
-      </div>
-    </form>
-
-  </div>
-
-  <div class="col-md-3 well text-center" style="padding:2px; position:relative;" ng-repeat="match in matches.list">
-
-    <!-- STATUS -->
-    <span class="badge badge-success" style="position:absolute; top:10px; right:10px;">&nbsp;</span>
-
-    <!-- USERNAME -->
-    <div class="col-md-12" style="z-index:1000; position:absolute; background-color:#eee; font-size:1.2em; color:#FFF; top:180px;">
-      {{match.user.name}}
-    </div>
-
-    <!-- user picture -->
-    <div class="col-md-12">
-      <img ng-class="setBlurOrNot(match)" src="http://lorempixel.com/200/200" alt="{{match.name}}">
-    </div>
-    <!-- user details -->
-    <div class="col-md-12">
-      
-      <div class="col-md-4" ng-if="match.friends">
-        <button class="btn btn-xs btn-primary" ng-click="open_send_message(match.user.id)">MSG</button>
-      </div>
-      <div class="col-md-4">
-        <a href="/users/{{match.user.id}}">Profile</a>
-      </div>
-      <div class="col-md-4">
-        <span ng-if="match.friends">FRIENDS</span>
-        <span ng-if="match.punched_me" ng-click="punch_back(match.user.id)">Punch back!</span>
-        <span ng-if="match.punched">Punched</span>
-        <span ng-if="match.fresh" ng-click="punch(match.user.id)">PUNCH</span>
-      </div>
-
-    </div>
-
-  </div>
-  
-  <!-- Send Message Modal -->
-  <div id="sendMessageModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" ng-click="open_send_message(1)">Send Message</h4>
+        <div class="col-md-4">
+          <a href="/users/{{match.user.id}}">Profile</a>
         </div>
-        <div class="modal-body">
-          <div class="inpup-group">
-            <textarea ng-model="message.body" class="form-control" aria-describedby="send-addon"></textarea>
+        <div class="col-md-4">
+          <span ng-if="match.friends">FRIENDS</span>
+          <span ng-if="match.punched_me" ng-click="punch_back(match.user.id)">Punch back!</span>
+          <span ng-if="match.punched">Punched</span>
+          <span ng-if="match.fresh" ng-click="punch(match.user.id)">PUNCH</span>
+        </div>
+
+      </div>
+
+    </div>
+    
+    <!-- Send Message Modal -->
+    <div id="sendMessageModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" ng-click="open_send_message(1)">Send Message</h4>
           </div>
-          <div class="inpup-group">            
-            <button ng-if="!message.sending && !message.confirmation" class="btn btn-lg btn-success" style="width:100%;" ng-click="send_message()">SEND</button>
-            <span ng-if="message.sending">Sending...</span>
-            <span ng-if="message.confirmation">Your message is flying!</span>
+          <div class="modal-body">
+            <div class="inpup-group">
+              <textarea ng-model="message.body" class="form-control" aria-describedby="send-addon"></textarea>
+            </div>
+            <div class="inpup-group">            
+              <button ng-if="!message.sending && !message.confirmation" class="btn btn-lg btn-success" style="width:100%;" ng-click="send_message()">SEND</button>
+              <span ng-if="message.sending">Sending...</span>
+              <span ng-if="message.confirmation">Your message is flying!</span>
+            </div>
+
           </div>
-
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
+
 
 </div>

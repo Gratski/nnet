@@ -2,6 +2,34 @@
 
   angular.module('social').controller('matches', ['$scope', '$http', '$window', 'urlParser', function($scope, $http, $window, urlParser){
 
+    $scope.getPages = function(num) {
+        //alert(num)
+        var arr = new Array(num);
+        var i = 1;
+        for(i=1; i<=arr.length; i++){
+          arr[i-1] = i
+        }
+        return arr
+    }
+
+    $scope.refresh = function(){
+      $scope.page = 1
+      $scope.init()
+    }
+
+    var get_search_params = function(){
+      $http.get('/api/search/params')
+      .success(function(data, status, headers, config){
+        $scope.searchParams = data
+        console.log($scope.searchParams)
+        console.log('good')
+      })
+      .error(function(data, status, headers, config){
+        $scope.searchParams = null
+        console.log('good')
+      })
+    }
+
     //set filtering painel to hidden
     $scope.filtering = false
     $scope.showFilter = function(){
@@ -12,19 +40,6 @@
         $scope.filtering = true
       }
     }
-    
-
-    $http.get('/api/search/0/20')
-    .success(function(data, status, headers, config){
-      console.log('SEARCH RESULTS')
-      console.log(data)
-    })
-    .error(function(data, status, headers, config){
-      console.log('SEARCH ERROR')
-    })
-
-    //obtaining params
-    $scope.params = urlParser.parse($window.location.href)
 
     //Send Message
     $scope.message = {}
@@ -40,10 +55,47 @@
 
     //pagination
     $scope.pagination = {}
+    $scope.pagination.count = 0;
     $scope.pagination.per_page = 20
-    $scope.number_of_pages = Math.ceil( $scope.matches.total / $scope.per_page )
-    $scope.pagination.cur;
+    $scope.number_of_pages = Math.ceil( $scope.pagination.count / $scope.pagination.per_page )
+   
 
+    //obtaining params
+    $scope.params = urlParser.parse($window.location.href)
+    if( !$scope.params.page )
+      $scope.pagination.cur = 1;
+    else
+      $scope.pagination.cur = $scope.params.page
+
+    // SEARCH REFRESH AND GET RESULTS
+    var search = function(){
+      var offset = ($scope.pagination.cur - 1) * $scope.pagination.per_page
+      $scope.searching = true
+      $http.get('/api/search/'+ offset +'/'+$scope.pagination.per_page)
+      .success(function(data, status, headers, config){
+        console.log('SEARCH RESULTS')
+        console.log(data)
+        $scope.searching = false
+        $scope.matches.list = data
+      })
+      .error(function(data, status, headers, config){
+        console.log('SEARCH ERROR')
+        $scope.searching = false
+      })
+    }
+    var search_count = function(){
+      $scope.pagination.count = 0;
+      $http.get('/api/search/count')
+      .success(function(data, status, headers, config){
+        console.log('count')
+        console.log(data)
+        $scope.pagination.count = data
+      })
+      .error(function(data, status, headers, config){
+        console.log('error counting...')
+        $scope.pagination.count = 0;
+      })
+    }
 
     //BLUR
     $scope.setBlurOrNot = function(match){
@@ -75,20 +127,6 @@
         $scope.message.sending = false
       })
     }
-    $scope.count_matches = function(){
-
-    }
-
-    //get user matches considering the offset and the limit
-    $scope.get_matches = function(){
-      $http.get('/api/matches/'+ (($scope.pagination.cur - 1) * $scope.pagination.per_page) +'/' + $scope.pagination.per_page)
-      .success(function(data, status, headers, config){
-        $scope.matches.list = data
-      })
-      .error(function(data, status, headers, config){
-        alert('Oops')
-      })
-    }
 
     //punch user
     $scope.punch = function(user_id){
@@ -101,6 +139,7 @@
         {
           if( matches[i].user.id == user_id )
           {
+            alert('found!')
             matches[i].punched = true
             matches[i].fresh = null
             break;
@@ -153,8 +192,9 @@
 
     //init method
     $scope.init = function(){
-      $scope.count_matches()
-      $scope.get_matches()
+      get_search_params()
+      search_count()
+      search()
     }
 
     //initializing

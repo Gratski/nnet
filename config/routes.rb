@@ -29,6 +29,10 @@ Rails.application.routes.draw do
   get 'matches' => 'matches#index'
   get '/api/matches/:offset/:limit' => 'matches#get_matches'
 
+  #LOCATIONS
+  get '/api/locations/country' => 'locations#countries'
+  get '/api/locations/country/:country_id' => 'locations#cities'
+
   #PUNCHES
   get   'punches'    => 'punches#index'
   post  '/api/punch' => 'punches#punch'
@@ -46,7 +50,10 @@ Rails.application.routes.draw do
   get 'settings/profession' => 'settings#profession'
 
   #SEARCH
+  get '/api/search/count' => 'searches#count'
+  get '/api/search/params' => 'searches#get_search_params'
   get '/api/search/:offset/:limit' => 'searches#get'
+  put '/api/search' => 'searches#update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

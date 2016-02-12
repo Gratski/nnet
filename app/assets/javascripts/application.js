@@ -11,13 +11,14 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require bootstrap-sprockets
 
-//= require angular/angular.min.js
-//= require angular/angular-route.js
+//= require angular
+//= require angular-rails-templates
 
-//= require angular/core/application.js
+//= require angular/core/application.js.erb
 
 ///////////SERVICES
 //= require angular/services/sectors/basic.js
