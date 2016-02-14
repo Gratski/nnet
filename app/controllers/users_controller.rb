@@ -4,7 +4,9 @@ class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def show
+    @current_user = current_user
     @user = User.find(params[:id])
+    @pictures = @user.pictures
   end
 
   def edit

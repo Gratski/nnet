@@ -38,6 +38,7 @@ class SearchesController < ApplicationController
     @result[:city] = @search.city
     @result[:min_age] = @search.min_age
     @result[:max_age] = @search.max_age
+    @result[:looking_for] = @search.looking_for
     render json: @result, status: :ok
   end
 
@@ -49,6 +50,7 @@ class SearchesController < ApplicationController
     @search.max_age = params[:max_age].to_i if params[:max_age] && !params[:max_age].blank?
     @search.country_id = params[:country_id].to_i if params[:country_id] && !params[:country_id].blank?
     @search.city_id = params[:city_id].to_i if params[:city_id] && !params[:city_id].blank?
+    @search.looking_for = params[:looking_for] if params[:looking_for] && !params[:looking_for].blank?
     if @search.save
       render "matches/index"
     else
@@ -67,6 +69,9 @@ class SearchesController < ApplicationController
     end
     if @search.city_id
       query = query + " AND city_id = #{@search.city_id}"
+    end
+    if @search.looking_for
+      query = query + " AND gender = '#{@search.looking_for}'"
     end
     return query
   end

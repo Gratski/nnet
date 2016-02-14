@@ -1,100 +1,81 @@
-<div class="col-md-12" ng-controller="matches">
+<div class="col-md-12" ng-controller="matches" id="container">
   
-  <p>
-      Looking for matches
-      <span ng-if="searchParams.city || searchParams.country">in </span>
-      <span ng-if="searchParams.city">{{searchParams.city.name}}, </span>
-      <span ng-if="searchParams.country">{{searchParams.country.name}}, </span> 
-      <span ng-if="searchParams.min_age && searchParams.max_age">aged between {{searchParams.min_age}} and {{searchParams.max_age}} years old</span>
-      <span ng-if="searchParams.min_age && !searchParams.max_age"> over {{searchParams.min_age}} years old </span>
-      <span ng-if="!searchParams.min_age && searchParams.max_age"> under {{searchParams.max_age}} years old </span> 
-      | 
-      <a ng-click="showFilter()" style="color:#cc181e;">change filter</a>
-      </p>
-
-    <div ng-if="filtering" ng-controller="matches_filter" class="well" style="background:none; background-color:#EFEFEF;">
-      
-      <form class="form-horizontal">
-
-        <!-- LOCATION -->
-        <div class="form-group">
-          <div class="col-md-12 no-padding">
-            <div class="col-md-6">
-              <select ng-model="filter.country.selected">
-                <option ng-repeat="country in filter.country.list" class="form-control" ng-click="get_cities(country.id)" value="{{country.id}}">{{country.name}}</option>
-              </select>
-            </div>
-            <div class="col-md-6" ng-if="filter.country.selected">
-              <select ng-model="filter.city.selected">
-                <option ng-repeat="city in filter.city.list" class="form-control" value="{{city.id}}">{{city.name}}</option>
-              </select>
-            </div>
+  <p> 
+      <!-- GENDER -->
+      <div class="col-xs-2">
+        Looking for&nbsp;
+        <i class="glyphicon glyphicon-heart-empty"></i>
+        <a style="text-decoration:underline;" type="button" data-toggle="dropdown" class="color-red dropdown-toggle">{{searchParams.looking_for}}</a>
+        </a>
+        <ul class="dropdown-menu">
+          <li ng-class="{'active':searchParams.looking_for == 'women'}"><a ng-click="updateLookingFor('women')">women</a></li>
+          <li ng-class="{'active':searchParams.looking_for == 'men'}"><a ng-click="updateLookingFor('men')">men</a></li>
+        </ul>
+      </div>
+      &nbsp;&nbsp;
+  
+      <!-- LOCATION -->
+      <div class="dropdown dropdown-location col-xs-2" style="position:relative;">
+        <span ng-if="searchParams.city || searchParams.country">in </span>
+        <i class="glyphicon glyphicon-map-marker" ng-if="searchParams.city || searchParams.country"></i>
+        <a id="city" ng-click="showSelectLocation()" style="text-decoration:underline;" class="color-red country-toggle" ng-if="searchParams.city">{{searchParams.city.name}}, </a>
+        <a id="country" ng-click="showSelectLocation()" style="text-decoration:underline;" class="color-red country-toggle" ng-if="searchParams.country">{{searchParams.country.name}},</a> 
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <div id="country-dropdown" class="drop well" style="width:250px; padding:10px; position:absolute; z-index:1000; background:none; background-color:#FFF; display:none;">
+          <!-- COUNTRY -->
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select class="form-control">
+              <option ng-repeat="country in countries" ng-click="get_cities(country.id)">{{country.name}}</option>
+            </select>
           </div>
+          <!-- CITY -->
+          <div ng-if="cities && cities.length > 0" class="form-group">
+            <label for="city">City</label>
+            <select class="form-control">
+              <option ng-repeat="city in cities" ng-click="selectCtiy(city.id)">{{city.name}}</option>
+            </select>
+          </div>
+          <!-- COUNTRY -->
+          <div class="form-group">
+            <button ng-click="updateLocation()" class="btn btn-success" style="width:100%;">save</button>
+          </div>
+
         </div>
+      </div>
 
-        
-        <div class="form-group">
-          <div class="col-md-12 no-padding">
-            <div class="col-md-8 no-padding">
-              Age
-            </div>
-            <div class="col-md-4 text-left">
-              Who is Looking for
+
+      <!-- AGE -->
+      <div class="col-xs-4" style="position:relative;">
+        <i class="glyphicon glyphicon-tag" ng-if="searchParams.min_age || searchParams.max_age"></i>
+        <span id="age" ng-click="showSelectRange()" style="text-decoration:underline;" class="color-red" ng-if="searchParams.min_age && searchParams.max_age">between {{searchParams.min_age}} and {{searchParams.max_age}} years old</span>
+        <span id="age" ng-click="showSelectRange()" ng-if="searchParams.min_age && !searchParams.max_age"> over {{searchParams.min_age}} years old</span>
+        <span id="age" ng-click="showSelectRange()" ng-if="!searchParams.min_age && searchParams.max_age"> under {{searchParams.max_age}} years old</span>
+        </p>
+
+        <!-- RANGE -->
+        <div id="age-dropdown" class="dropdown-menu" style="position:absolute; z-index: 1000; width:300px; padding:10px; display:none;">
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="min_age">From</label>
+              <input id="min_age" type="text" class="form-control" ng-model="searchParams.min_age" placeholder="20">
             </div>
           </div>
-
-          <!-- AGE -->
-          <div class="col-md-6 no-padding">
-            <div class="col-md-2 text-left">
-              <input type="text" ng-model="filter.age.min" class="form-control" placeholder="Min">
-            </div>
-            <div class="col-md-2">
-              <input type="text" ng-model="filter.age.max" class="form-control" placeholder="Max">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="max_age">To</label>
+              <input id="max_age" type="text" class="form-control" ng-model="searchParams.max_age" placeholder="40">
             </div>
           </div>
-
-          <!-- LOOKING FOR -->
-          <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-              <select class="form-control" ng-model="filter.looking_for">
-                <option value="">New friends</option>
-                <option value="">Something special</option>
-                <option value="">Date</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <!-- SUBMIT -->
-        <div class="form-group">
           <div class="col-md-12">
-            <button class="btn btn-success" ng-click="filter.update()" style="width:100%;">
-              Filter
-            </button>
-          </div>
+            <div class="form-group">
+              <button class="btn btn-success" ng-click="updateAge()" style="width:100%;">save</button>
+            </div>
+          </div>          
         </div>
-      </form>
-    </div>
-
-    <!-- pagination -->
-    <nav>
-      <ul class="pagination">
-        <li>
-          <a aria-label="Previous" ng-class="{'disabled':pagination.cur == 1}">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li ng-repeat="i in getPages(number_of_pages)" ng-class="{'active':pagination.cur == i}"><a href="/matches?page={{i}}">{{i}}</a></li>
-        <li>
-          <a href="#" aria-label="Next" ng-class="{'disabled':pagination.cur == number_of_pages}">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-
-    <p ng-if="searching">Searching...</p>
+      </div>
+    </p>
 
     <div class="col-md-3 well text-center" style="padding:2px; position:relative;" ng-repeat="match in matches.list">
 
@@ -129,7 +110,25 @@
       </div>
 
     </div>
+
+
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
+    <div class="row" style="height:300px;">fdfsd</div>
     
+    <p ng-if="searching">Searching...</p>
+
     <!-- Send Message Modal -->
     <div id="sendMessageModal" class="modal fade" role="dialog">
       <div class="modal-dialog">

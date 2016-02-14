@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
 
   has_one :search
 
+  has_many :pictures
+
   #get this user conversations
   def conversations
     Conversation.where("user_1 = ? OR user_2 = ?", id, id)
@@ -31,6 +33,10 @@ class User < ActiveRecord::Base
     User.where(:id => punchers)
   end
   
+  def friends_with?(user_id)
+    already_punched_me(user_id) and already_punched?(user_id)
+  end
+
   #verifica se um user ja fez punch
   def already_punched?(user_id)
     punch = Punch.where(user_id: id, user_punched: user_id)

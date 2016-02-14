@@ -1,73 +1,180 @@
-<div ng-controller="profile" class="col-md-12">
+<div ng-controller="profile" ng-init="init(<%= @user.to_json %>, <%= @pictures.to_json %>)" class="col-md-12">
   
-  <div class="row">
-    <div class="col-md-8">
-      <div class="col-md-5">PICTURE</div>
-      <div class="col-md-7">
-        <%= @user.name %><br>
-        <% if @user.city %>
-          <%= @user.city.name %>, <%= @user.city.country.name %>
-        <% else %>
-          <span>location unknown</span>
-        <% end %>
-      </div>
+  <div class="col-md-12">
+
+    <div ng-if="messageConfirmation" class="alert alert-success alert-dismissible" role="alert">
+      <button type="button" class="close" ng-click="messageConfirmation = false"><span>&times;</span></button>
+      <strong>Sent!</strong> Your messag has been sent to <%= @user.name %>
     </div>
-    <div class="col-md-4">
-      <% if current_user.is_a_punch_back?(@user.id) %>
-        <button ng-click="punch_back(<%= @user.id %>)" class="btn btn-lg btn-success">Punch back!</button>
-      <% elsif current_user.already_punched?(@user.id) %>
-        <button class="btn btn-lg btn-info">Already punched!</button>
+
+
+    <div class="col-md-3">
+      <% if @current_user.friends_with?(@user.id) %>
+        <img src="http://www.releasedateportal.com/wp-content/uploads/2015/04/ipad-art-wide-AVATAR2-420x0.jpg" alt="" style="max-width:200px; max-height:200px;"><br>
       <% else %>
-        <button ng-click="punch(<%= @user.id %>)" class="btn btn-lg btn-primary">Punch</button>
+        <img id="profilePicture" src="http://www.releasedateportal.com/wp-content/uploads/2015/04/ipad-art-wide-AVATAR2-420x0.jpg" class="blur" alt="" style="max-width:200px; max-height:200px;"><br>
       <% end %>
+      <table>
+        <tr>
+          <td class="well" style="height:100px;">SOCIAL LIFE %</td>
+          <td class="well" style="height:100px;">SEX %</td>
+        </tr>
+        <tr>
+          <td class="well" style="height:100px;">FAMILY %</td>
+          <td class="well" style="height:100px;">PROFESSIONAL %</td>
+        </tr>
+        <tr>
+          <td class="well" style="height:100px;">FUN %</td>
+          <td class="well" style="height:100px;">FOOD %</td>
+        </tr>
+        <tr>
+          <td class="well" style="height:100px;">OUTGOING %</td>
+          <td class="well" style="height:100px;">PETS %</td>
+        </tr>
+      </table>
     </div>
-  </div>
 
-  <!-- DETAILS -->
-  <div class="row">
-    <% if @user.detail %>
-      <!-- Summary -->
-      <% if @user.detail.self_description %>
-        <div class="col-md-12">
-          <p class="lead">Self description</p>
-          <p><%= @user.detail.self_description if @user.detail %></p>
-        </div>
-      <% end %>
-    gosto de tu
-      <!-- Topics -->
-      <% if @user.topics.size > 0 %>
-        <div class="col-md-12">
-          <p class="lead">Describe yourself with 5 words</p>
-          <span class="label label-info topics">Topic 1</span>
-          <span class="label label-info topics">Topic 2</span>
-        </div>
-      <% end %>
-
-      <!-- Interests -->
-      <% if @user.interests.size > 0 %>
-        <div class="col-md-12">
-          
-        </div>
-      <% end %>
-
-      <!-- books and movies -->
-      <div class="col-md-12">
-        <p class="lead">Books and Movies</p>
-        <span class="label label-info topics">Livro 1</span>
-        <span class="label label-info topics">Livro 2</span>
+    <div class="col-md-9">
+      
+      <div class="col-md-7">
+        <p>
+          <span class="lead color-red"><b><%= @user.name %>, 26</b></span><br>
+          <i class="glyphicon glyphicon-map-marker color-red"></i> <%= @user.country.name %>, <%= @user.city.name %><br>
+          <i class="glyphicon glyphicon-education color-red"></i> Master Degree in Computer Science<br>
+          &nbsp;<br>
+          <i class="glyphicon glyphicon-search color-red"></i> New friends, short-term relationship
+        </p>
       </div>
+      <div class="col-md-5">
+        
+        <span ng-if="!loader.action">
+          <!-- ALREADY FRRIENDS -->
+          <% if @current_user.friends_with?(@user.id) %>
+              
+              <button data-toggle="modal" data-target="#sendMessageModal" class="btn btn-default">send message <i class="glyphicon glyphicon-send"></i> </button>
 
-      <div class="col-md-12">
-        <p class="lead">Idols</p>
-        <span class="label label-info topics">Livro 1</span>
+          <!-- PUNCHED -->
+          <% elsif @current_user.already_punched?(@user.id) %>
+            
+            <button class="btn btn-success disabled">already punched <i class="glyphicon glyphicon-flash"></i></button>
+
+          <!-- PUNCH BACK -->
+          <% elsif @current_user.already_punched_me(@user.id) %>
+            <!-- before action -->
+            <button ng-if="!friends" ng-click="punchBack(<%= @user.id %>)" class="btn btn-danger">punch back <i class="glyphicon glyphicon-flash"></i> </button> 
+            <!-- after action -->
+            <button ng-if="friends" data-toggle="modal" data-target="#punchBackModal" class="btn btn-default">send message <i class="glyphicon glyphicon-send"></i> </button>  
+
+          <% else %>
+            <!-- before action -->
+            <button ng-if="!punched" ng-click="punch(<%= @user.id %>)" class="btn btn-success">punch now <i class="glyphicon glyphicon-flash"></i></button>
+            <!-- after action -->
+            <button ng-if="punched" class="btn btn-success disabled">already punched <i class="glyphicon glyphicon-flash"></i></button>
+          <% end %>
+        </span>
+
+        <span ng-if="loader.action">loading...</span>
+
       </div>
+      
+      <!-- DETAILS -->
+      <% if @user.detail %>
+        <div class="col-md-12" style="margin-top:30px;">
+          <span class=""><b>_about me</b></span>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. <br>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+        </div>
 
-    <% else %>
-      <div class="col-md-12 text-center dashed-box">
-        <h3>Nothing to show</h3>
+        <div class="col-md-12" style="margin-top:30px;">
+          <span><b>_me in topics</b></span>
+          <p>
+            <span class="label label-info topics">Topic</span>
+            <span class="label label-info topics">Topic</span>
+            <span class="label label-info topics">Topic</span>
+            <span class="label label-info topics">Topic</span>
+          </p>
+        </div>
+
+        <div class="col-md-12" style="margin-top:30px;">
+          <span><b>_a perfect day is</b></span>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.
+          </p>
+        </div>
+
+        <div class="col-md-12" style="margin-top:30px;">
+          <span><b>_if i could i would</b></span>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took.
+          </p>
+        </div>
+
       </div>
     <% end %>
+  </div>
+  <% if !@user.detail %>
+    <div class="col-md-12 text-center">
+      User has nothing to be displayed
+    </div>
+  <% end %>
+
+
+
+<!-- MODALS -->
+<!-- MESSAGE -->
+<div id="sendMessageModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Send Message</h4>
+      </div>
+      <div class="modal-body">
+        <div class="inpup-group">
+          <textarea ng-model="message" class="form-control" aria-describedby="send-addon"></textarea>
+        </div>
+        <div class="inpup-group">            
+          <button class="btn btn-success" style="width:100%;" ng-click="sendMessage(<%= @user.id %>)">send</button>
+        </div>
+
+      </div>
+    </div>
 
   </div>
+</div>
+
+<!-- PUNCH BACK MODAL -->
+<div id="punchBackModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" ng-click="open_send_message(1)">
+          It's a match! <i class="glyphicon glyphicon-flash color-red"></i>
+        </h4>
+      </div>
+      <div class="modal-body">
+        
+        <h5>Send a message to <%= @user.name %>, <a ng-click="showSendMessageModal()"> click here</a></h5>
+
+      </div>
+      <div class="modal-footer">
+        
+        <small>when a person matches another it means you have no time to waste! Send a message and start a conversation right away.</small>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
 
 </div>
